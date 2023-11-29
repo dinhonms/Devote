@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		77BBA2F22B1746A200458B45 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BBA2F12B1746A200458B45 /* Constant.swift */; };
+		77BBA2F42B17667F00458B45 /* HideKeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BBA2F32B17667F00458B45 /* HideKeyboardExtension.swift */; };
 		77D2F59C2B14AB04005C81C0 /* DevoteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D2F59B2B14AB04005C81C0 /* DevoteApp.swift */; };
 		77D2F59E2B14AB04005C81C0 /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D2F59D2B14AB04005C81C0 /* MainScreen.swift */; };
 		77D2F5A02B14AB05005C81C0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77D2F59F2B14AB05005C81C0 /* Assets.xcassets */; };
@@ -19,6 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		77BBA2F12B1746A200458B45 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		77BBA2F32B17667F00458B45 /* HideKeyboardExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideKeyboardExtension.swift; sourceTree = "<group>"; };
 		77D2F5982B14AB04005C81C0 /* Devote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Devote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		77D2F59B2B14AB04005C81C0 /* DevoteApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevoteApp.swift; sourceTree = "<group>"; };
 		77D2F59D2B14AB04005C81C0 /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
@@ -115,6 +119,7 @@
 		77D2F5B72B15EDDF005C81C0 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				77BBA2F12B1746A200458B45 /* Constant.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -129,6 +134,7 @@
 		77D2F5B92B15EDF0005C81C0 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				77BBA2F32B17667F00458B45 /* HideKeyboardExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -223,6 +229,8 @@
 			files = (
 				77D2F5A52B14AB05005C81C0 /* Persistence.swift in Sources */,
 				77D2F59E2B14AB04005C81C0 /* MainScreen.swift in Sources */,
+				77BBA2F42B17667F00458B45 /* HideKeyboardExtension.swift in Sources */,
+				77BBA2F22B1746A200458B45 /* Constant.swift in Sources */,
 				77D2F5A82B14AB05005C81C0 /* Devote.xcdatamodeld in Sources */,
 				77D2F59C2B14AB04005C81C0 /* DevoteApp.swift in Sources */,
 			);
