@@ -15,6 +15,7 @@ struct MainScreen: View {
     
     private var items: FetchedResults<Item>
     @State private var taskName = ""
+    @State private var isAnimating = false
     
     private var isButtonDisabled: Bool {
         return taskName.isEmpty
@@ -57,79 +58,110 @@ struct MainScreen: View {
         }
     }
     
+    fileprivate func setIsAnimating(_ isAnimating: Bool) {
+        withAnimation(.easeOut(duration: 0.25)){
+            self.isAnimating = isAnimating
+        }
+    }
+    
     private func addTask() {
         addItem()
+        setIsAnimating(false)
     }
     
     //MARK: - PREVIEW
     var body: some View {
         NavigationView {
-            VStack (spacing: 25) {
-                TextField(
-                    "New Task",
-                    text: $taskName
-                )
-                .textInputAutocapitalization(.never)
-                .disableAutocorrection(true)
-                .padding()
-                .background(Color(UIColor.systemGray6))
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .foregroundStyle(.gray)
-                .font(.system(.title3, design: .rounded, weight: .medium))
-                .onChange(of: taskName) { newValue in
-                    //                    handleButtonActivation()
-                }
-                .padding(.horizontal)
-                .padding(.top, 20)
-                
-                Button {
-                    addTask()
-                } label: {
-                    
-                    Spacer()
-                    Text("SAVE")
-                        .padding()
-                        .foregroundStyle(.white)
-                        .font(.system(.headline, weight: .semibold))
-                    Spacer()
-                }
-                .background(isButtonDisabled ? .gray : backgroundColor)
-                .clipShape(
-                    RoundedRectangle(cornerRadius: 10)
-                )
-                .padding(.horizontal)
-                .disabled(isButtonDisabled)
-                
-                List {
-                    ForEach(items) { item in
-                        VStack(alignment: .leading) {
-                            Text(item.task ?? "")
-                                .font(.headline)
-                            Text(item.timestamp!, formatter: itemFormatter)
-                                .font(.footnote)
-                                .foregroundStyle(.gray)
-                        }
-                        //Navigation link
-                        //                        NavigationLink {
-                        //                            Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-                        //                        } label: {
-                        //                            VStack(alignment: .leading) {
-                        //                                Text(item.task ?? "")
-                        //                                    .font(.headline)
-                        //                                Text(item.timestamp!, formatter: itemFormatter)
-                        //                            }
-                        //                        }
+            ZStack {
+                VStack (spacing: 25) {
+                    TextField(
+                        "New Task",
+                        text: $taskName
+                    )
+                    .textInputAutocapitalization(.never)
+                    .disableAutocorrection(true)
+                    .padding()
+                    .background(Color(UIColor.systemGray6))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .foregroundStyle(.gray)
+                    .font(.system(.title3, design: .rounded, weight: .medium))
+                    .onChange(of: taskName) { newValue in
+                        //                    handleButtonActivation()
                     }
-                    .onDelete(perform: deleteItems)
-                }//List
+                    .padding(.horizontal)
+                    .padding(.top, 20)
+                    .onTapGesture(perform: {
+                        setIsAnimating(true)
+                    })
+                    
+                    Button {
+                        addTask()
+                    } label: {
+                        
+                        Spacer()
+                        Text("SAVE")
+                            .padding()
+                            .foregroundStyle(.white)
+                            .font(.system(.headline, weight: .semibold))
+                        Spacer()
+                    }
+                    .background(isButtonDisabled ? .gray : backgroundColor)
+                    .clipShape(
+                        RoundedRectangle(cornerRadius: 10)
+                    )
+                    .padding(.horizontal)
+                    .disabled(isButtonDisabled)
+                    
+                    List {
+                        ForEach(items) { item in
+                            VStack(alignment: .leading) {
+                                Text(item.task ?? "")
+                                    .font(.headline)
+                                Text(item.timestamp!, formatter: itemFormatter)
+                                    .font(.footnote)
+                                    .foregroundStyle(.gray)
+                            }
+                            //Navigation link
+                            //                        NavigationLink {
+                            //                            Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+                            //                        } label: {
+                            //                            VStack(alignment: .leading) {
+                            //                                Text(item.task ?? "")
+                            //                                    .font(.headline)
+                            //                                Text(item.timestamp!, formatter: itemFormatter)
+                            //                            }
+                            //                        }
+                        }
+                        .onDelete(perform: deleteItems)
+                        .listRowBackground(Color.clear)
+                    }//List
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .padding()
+                    .frame(maxWidth: 640)
+                    .listStyle(.insetGrouped)
+                    .shadow(color: .black.opacity(0.3), radius: 12)
+                }//VStack
+                .navigationTitle("Daily Tasks")
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         EditButton()
                     }
                 }
-            }//VStack
-            .navigationTitle("Daily Tasks")
-        }
+            }//ZStack
+            .background(
+                ZStack {
+                    gradientBackground
+                        .ignoresSafeArea(.all)
+                    Image("rocket")
+                        .resizable()
+                        .imageScale(.large)
+                        .aspectRatio(contentMode: .fill)
+                        .ignoresSafeArea()
+                        .offset(x: isAnimating ? 90 : 0)
+                }
+            )
+        }//Navigation
+        .navigationViewStyle(.stack)
     }
 }
 
