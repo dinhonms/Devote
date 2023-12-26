@@ -16,6 +16,7 @@ struct MainScreen: View {
     private var items: FetchedResults<Item>
     @State private var taskName = ""
     @State private var isAnimating = false
+    @State private var showTaskInput = false
     
     private var isButtonDisabled: Bool {
         return taskName.isEmpty
@@ -67,6 +68,15 @@ struct MainScreen: View {
     private func addTask() {
         addItem()
         setIsAnimating(false)
+        toggleShowTaskInput()
+    }
+    
+    private func toggleShowTaskInput() {
+        self.showTaskInput.toggle()
+    }
+    
+    private func inputSelected(isSelected: Bool) {
+        setIsAnimating(isSelected)
     }
     
     //MARK: - PREVIEW
@@ -74,44 +84,13 @@ struct MainScreen: View {
         NavigationView {
             ZStack {
                 VStack (spacing: 25) {
-                    TextField(
-                        "New Task",
-                        text: $taskName
-                    )
-                    .textInputAutocapitalization(.never)
-                    .disableAutocorrection(true)
-                    .padding()
-                    .background(Color(UIColor.systemGray6))
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .foregroundStyle(.gray)
-                    .font(.system(.title3, design: .rounded, weight: .medium))
-                    .onChange(of: taskName) { newValue in
-                        //                    handleButtonActivation()
-                    }
-                    .padding(.horizontal)
-                    .padding(.top, 20)
-                    .onTapGesture(perform: {
-                        setIsAnimating(true)
-                    })
+                    //MARK: - HEADER
+                    Spacer(minLength: 80)
                     
-                    Button {
-                        addTask()
-                    } label: {
-                        
-                        Spacer()
-                        Text("SAVE")
-                            .padding()
-                            .foregroundStyle(.white)
-                            .font(.system(.headline, weight: .semibold))
-                        Spacer()
-                    }
-                    .background(isButtonDisabled ? .gray : backgroundColor)
-                    .clipShape(
-                        RoundedRectangle(cornerRadius: 10)
-                    )
-                    .padding(.horizontal)
-                    .disabled(isButtonDisabled)
+                    //MARK: - NEW TASK BUTTON
+                    GradientButtonView(buttonName: "New Task", buttonAction: toggleShowTaskInput)
                     
+                    //MARK: - TASKS
                     List {
                         ForEach(items) { item in
                             VStack(alignment: .leading) {
@@ -121,16 +100,6 @@ struct MainScreen: View {
                                     .font(.footnote)
                                     .foregroundStyle(.gray)
                             }
-                            //Navigation link
-                            //                        NavigationLink {
-                            //                            Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-                            //                        } label: {
-                            //                            VStack(alignment: .leading) {
-                            //                                Text(item.task ?? "")
-                            //                                    .font(.headline)
-                            //                                Text(item.timestamp!, formatter: itemFormatter)
-                            //                            }
-                            //                        }
                         }
                         .onDelete(perform: deleteItems)
                         .listRowBackground(Color.clear)
@@ -147,18 +116,21 @@ struct MainScreen: View {
                         EditButton()
                     }
                 }
+                //MARK: - NEW TASK ITEM
+                if showTaskInput {
+                    BlankView()
+                        .onTapGesture {
+                            withAnimation() {
+                                toggleShowTaskInput()
+                                setIsAnimating(false)
+                            }
+                        }
+                    
+                    NewTaskInputView(taskName: $taskName, onInputSelectedAction: inputSelected, onAddTask: addTask)
+                }
             }//ZStack
             .background(
-                ZStack {
-                    gradientBackground
-                        .ignoresSafeArea(.all)
-                    Image("rocket")
-                        .resizable()
-                        .imageScale(.large)
-                        .aspectRatio(contentMode: .fill)
-                        .ignoresSafeArea()
-                        .offset(x: isAnimating ? 90 : 0)
-                }
+                BackgroundImage(isAnimating: $isAnimating)
             )
         }//Navigation
         .navigationViewStyle(.stack)
