@@ -18,6 +18,8 @@ struct MainScreen: View {
     @State private var isAnimating = false
     @State private var showTaskInput = false
     
+    @AppStorage("isLightMode") private var isLightMode = true
+    
     private var isButtonDisabled: Bool {
         return taskName.isEmpty
     }
@@ -85,6 +87,30 @@ struct MainScreen: View {
             ZStack {
                 VStack (spacing: 25) {
                     //MARK: - HEADER
+                    HStack (spacing: 1) {
+                        Text("Devote")
+                            .fontWeight(.heavy)
+                            .font(.system(.largeTitle, design: .rounded))
+                            .padding(.leading)
+                        Spacer()
+                        EditButton()
+                            .font(.system(size: 16, weight: .semibold, design: .rounded))
+                            .frame(minWidth: 70, minHeight: 24)
+                            .background(
+                                Capsule()
+                                    .stroke(lineWidth: 2)
+                            )
+                            .padding(.horizontal, 10)
+                        Button(action: {
+                            isLightMode.toggle()
+                        }, label: {
+                            Image(systemName: isLightMode ? "moon.circle" : "moon.circle.fill")
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                                .padding(.trailing)
+                        })
+                    }
+                    .foregroundStyle(.white)
                     Spacer(minLength: 80)
                     
                     //MARK: - NEW TASK BUTTON
@@ -102,20 +128,15 @@ struct MainScreen: View {
                             }
                         }
                         .onDelete(perform: deleteItems)
-                        .listRowBackground(Color.clear)
                     }//List
+                    .scrollIndicators(.hidden)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                     .padding()
                     .frame(maxWidth: 640)
-                    .listStyle(.insetGrouped)
+                    .listStyle(.plain)
                     .shadow(color: .black.opacity(0.3), radius: 12)
                 }//VStack
-                .navigationTitle("Daily Tasks")
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        EditButton()
-                    }
-                }
+                .toolbar(.hidden)
                 //MARK: - NEW TASK ITEM
                 if showTaskInput {
                     BlankView()

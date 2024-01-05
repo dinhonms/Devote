@@ -9,6 +9,7 @@ import SwiftUI
 
 struct NewTaskInputView: View {
     @Binding var taskName: String
+    @AppStorage("isLightMode") private var isLightMode = true;
     
     var onInputSelectedAction: (Bool) -> Void
     var onAddTask: () -> Void
@@ -28,7 +29,7 @@ struct NewTaskInputView: View {
                 .textInputAutocapitalization(.never)
                 .disableAutocorrection(true)
                 .padding()
-                .background(Color(UIColor.systemGray6))
+                .background(isLightMode ? Color(UIColor.secondarySystemBackground) : Color(UIColor.tertiarySystemBackground))
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .foregroundStyle(backgroundColor)
                 .font(.system(.title3, design: .rounded, weight: .bold))
@@ -62,11 +63,11 @@ struct NewTaskInputView: View {
             .padding(.bottom, 20)
             .background {
                 RoundedRectangle(cornerRadius: 16)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(isLightMode ? .white : Color(UIColor.secondarySystemBackground))
                     .shadow(color: .black.opacity(0.3), radius: 12)
             }
             .frame(maxWidth: 640)
-        .padding()
+            .padding()
         }
     }
 }
