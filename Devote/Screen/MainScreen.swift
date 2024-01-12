@@ -20,6 +20,9 @@ struct MainScreen: View {
     
     @AppStorage("isLightMode") private var isLightMode = true
     
+    private var blurRadius: Double = 8.0
+    private var animResult = false;
+    
     private var isButtonDisabled: Bool {
         return taskName.isEmpty
     }
@@ -131,9 +134,13 @@ struct MainScreen: View {
                     .shadow(color: .black.opacity(0.3), radius: 12)
                 }//VStack
                 .toolbar(.hidden)
+                .blur(radius: showTaskInput ? blurRadius : 0, opaque: false)
+                .transition(.move(edge: .bottom))
+                .animation(.easeOut(duration: 0.5), value: animResult)
+                
                 //MARK: - NEW TASK ITEM
                 if showTaskInput {
-                    BlankView()
+                    BlankView(backgroundColor: isLightMode ? .gray : .black, backgroundOpacity: isLightMode ? 0.5 : 0.3)
                         .onTapGesture {
                             withAnimation() {
                                 toggleShowTaskInput()
@@ -146,6 +153,7 @@ struct MainScreen: View {
             }//ZStack
             .background(
                 BackgroundImage(isAnimating: $isAnimating)
+                    .blur(radius: showTaskInput ? blurRadius : 0, opaque: false)
             )
         }//Navigation
         .navigationViewStyle(.stack)
