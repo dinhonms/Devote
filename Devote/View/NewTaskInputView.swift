@@ -44,6 +44,8 @@ struct NewTaskInputView: View {
                 
                 Button {
                     onAddTask()
+                    
+                    playSoundAndHaptic(isButtonDisabled ? .Rise : .Tap)
                 } label: {
                     
                     Spacer()

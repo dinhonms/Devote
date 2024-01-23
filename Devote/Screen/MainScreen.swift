@@ -106,6 +106,7 @@ struct MainScreen: View {
                             .padding(.horizontal, 10)
                         Button(action: {
                             isLightMode.toggle()
+                            playSoundAndHaptic(.Tap)
                         }, label: {
                             Image(systemName: isLightMode ? "moon.circle" : "moon.circle.fill")
                                 .resizable()

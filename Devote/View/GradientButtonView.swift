@@ -15,6 +15,7 @@ struct GradientButtonView: View {
     var body: some View {
         Button {
             buttonAction()
+            playSoundAndHaptic(.Ding)
         } label: {
             HStack {
                 Image(systemName: "plus.circle")

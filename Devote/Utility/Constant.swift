@@ -22,3 +22,6 @@ let backgroundColor = Color("background-color")
 let backgroundGradient: LinearGradient = {
     return LinearGradient(colors: [.pink, .blue], startPoint: .topLeading, endPoint: .bottomTrailing)
 }()
+
+//MARK: - HAPTICS
+let haptics = UINotificationFeedbackGenerator()
